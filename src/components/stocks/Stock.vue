@@ -3,14 +3,14 @@
     <div class="panel panel-success">
       <div class="panel-heading">
         <h3 class="panel-title">{{stock.name}}</h3>
-        <small>price: {{stock.price}}</small>
+        <small>price: {{stock.price | currency}}</small>
       </div>
       <div class="panel-body">
         <div class="pull-left">
-          <input type="number" class="form-control" laceholder="Quantity" v-model="quantity">
+          <input type="number" class="form-control" placeholder="Quantity" v-model="quantity" :class="{danger: insufficientFunds}">
         </div>  
         <div class="pull-right">
-          <button class="btn btn-success" @click="buyStock" :disabled="quantity <= 0">Buy</button>
+          <button class="btn btn-success" @click="buyStock" :disabled="insufficientFunds || quantity <= 0">{{insufficientFunds ? 'Insuff. Funds' : 'Buy'}}</button>
         </div>
       </div>
     </div>
@@ -26,14 +26,23 @@ export default {
     }
   },
   props: ['stock'],
+  computed: {
+    funds() {
+      return this.$store.getters.funds;
+    },
+    insufficientFunds() {
+      return this.quantity * this.stock.price > this.funds;
+    },
+     
+  },
   methods: {
     buyStock() {
       const order = {
         stockId: this.stock.id,
         stockPrice: this.stock.price,
-        quantity: this.stock.quantity
+        quantity: this.quantity
       };
-      console.log(order);
+      this.$store.dispatch('buyStocks', order)
       this.quantity = 0;
     }
   }
@@ -41,5 +50,7 @@ export default {
 </script>
 
 <style scoped>
-
+.danger {
+  border: 2px solid red;
+}
 </style>

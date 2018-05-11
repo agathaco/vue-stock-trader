@@ -1,7 +1,6 @@
 <template>
   <div>
     <app-stock v-for="stock in stocks" :stock="stock"></app-stock>
-    stocks: {{stocks}}
   </div>
 
 </template>
@@ -15,7 +14,6 @@ export default {
   computed: {
     stocks() {
       return this.$store.getters.stocks;
-      
     }
   }
 }
