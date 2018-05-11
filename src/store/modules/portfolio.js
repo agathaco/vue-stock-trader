@@ -7,7 +7,6 @@ const state = {
 
 const mutations = {
   'BUY_STOCKS' ( state, {stockId, quantity, stockPrice }) {
-    console.log(quantity)
     console.log(state.funds)
     const record = state.stocks.find(el => {
       return el.id == stockId //returns true if found record
@@ -32,13 +31,18 @@ const mutations = {
       state.stocks.splice(state.stocks.indexOf(record), 1)
     }
     state.funds += stockPrice * quantity
+  },
+  'SET_PORTFOLIO' (state, portfolio) {
+    state.funds = portfolio.funds;
+    state.stocks = portfolio.stockPortfolio ? portfolio.stockPortfolio : [];
   }
 };
 
 const actions = {
-  sellStocks({commit}, order) {
+  sellStocks: ({commit}, order) => {
     commit('SELL_STOCKS', order);
-  }
+  },
+
 };
 
 const getters = {

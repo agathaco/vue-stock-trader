@@ -5,6 +5,9 @@ import VueRouter from 'vue-router'
 import App from './App.vue'
 import { routes } from './routes'
 import store from './store/store'
+import axios from 'axios'
+
+axios.defaults.baseURL = 'https://stock-trader-68055.firebaseio.com/';
 
 Vue.use(VueRouter);
 
